@@ -67,46 +67,7 @@ export default defineConfig({
 				},
 			],
 		}),
-		VitePWA({
-			registerType: "autoUpdate",
-			includeAssets: ["favicon.png", "icon.svg", "icon-maskable.svg"],
-			manifest: {
-				name: "POSNext",
-				short_name: "POSNext",
-				description:
-					"Point of Sale system with real-time billing, stock management, and offline support",
-				theme_color: "#4F46E5",
-				background_color: "#ffffff",
-				display: "standalone",
-				scope: "/assets/pos_next/pos/",
-				start_url: "/pos",
-				icons: [
-					{
-						src: "/assets/pos_next/pos/icon.svg",
-						sizes: "192x192",
-						type: "image/svg+xml",
-						purpose: "any",
-					},
-					{
-						src: "/assets/pos_next/pos/icon.svg",
-						sizes: "512x512",
-						type: "image/svg+xml",
-						purpose: "any",
-					},
-					{
-						src: "/assets/pos_next/pos/icon-maskable.svg",
-						sizes: "192x192",
-						type: "image/svg+xml",
-						purpose: "maskable",
-					},
-					{
-						src: "/assets/pos_next/pos/icon-maskable.svg",
-						sizes: "512x512",
-						type: "image/svg+xml",
-						purpose: "maskable",
-					},
-				],
-			},
+		
 			workbox: {
 				globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
 				maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 3 MB
