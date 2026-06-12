@@ -53,16 +53,25 @@ const log = logger.create("Main")
 if ("serviceWorker" in navigator) {
 	window.addEventListener(
 		"load",
-		() => {
-			import("virtual:pwa-register").then(({ registerSW }) => {
-				registerSW({
-					immediate: true,
-					onNeedRefresh: () => log.info("New content available, reloading..."),
-					onOfflineReady: () => log.info("App ready to work offline"),
-					onRegistered: (reg) => log.info("Service Worker registered", reg),
-					onRegisterError: (err) => log.error("Service Worker registration error", err),
+		async () => {
+			try {
+				const reg = await navigator.serviceWorker.register("/sw.js", {
+					scope: "/",
 				})
-			})
+				log.info("Service Worker registered, scope:", reg.scope)
+
+				// Listen for updates — new SW available
+				reg.addEventListener("updatefound", () => {
+					const newWorker = reg.installing
+					newWorker?.addEventListener("statechange", () => {
+						if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+							log.info("New SW installed, will activate on next load")
+						}
+					})
+				})
+			} catch (err) {
+				log.error("Service Worker registration failed", err)
+			}
 		},
 		{ passive: true },
 	)
